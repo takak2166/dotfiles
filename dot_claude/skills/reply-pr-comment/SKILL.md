@@ -23,7 +23,7 @@ This skill assumes that the **current checkout branch** is the **head branch of 
    - If certificate or network errors occur, execute the same command from outside the sandbox
 1. **Filter to actionable top-level comments only**
    - Exclude comments where `in_reply_to_id` is not `null` (these are replies, not top-level)
-   - Exclude bot comments (`github-actions[bot]`, `coderabbitai`, etc.) — no reply needed
+   - Include both human and bot comments (e.g., `github-actions[bot]`, `coderabbitai`). Bot comments can still be skipped later in the confirmation step if the user does not want to reply.
    - Exclude comments that already have a reply from the PR author (use `author.login` from `gh pr view` and compare with `user.login` in each reply within the same thread)
 1. Collect the actual changes using `git log --oneline [base_branch]..HEAD` and `git diff [base_branch]...HEAD` to identify what was changed
    - Use the base branch identified in step 3
@@ -71,5 +71,4 @@ This skill assumes that the **current checkout branch** is the **head branch of 
 ## Restrictions
 - Do not execute any commands other than `gh pr view`, `gh api`, `git log`, and `git diff`
 - Do not post any reply without user confirmation
-- Do not reply to bot-generated comments
 - Do not modify any code — this skill only posts replies
