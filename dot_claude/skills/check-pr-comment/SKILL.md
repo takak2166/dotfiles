@@ -14,6 +14,7 @@ A skill to check comments on a specified PR number.
 
 ## Steps
 1. If no PR number is provided, prompt the user to enter it and exit
+1. Get the repository name by running `gh repo view --json nameWithOwner -q .nameWithOwner` (returns `owner/repo`). Use this value for `[owner]` and `[repo]` in the API URL in the following steps
 1. Verify the PR is Open or Draft using `gh pr view [PR number]`. If not, inform the user and exit
 1. Fetch **all** review comments using `gh api -X GET /repos/[owner]/[repo]/pulls/[pr_number]/comments --paginate`
   - Do **not** filter by `path` or file name at the API level. Always fetch the complete set first.
@@ -61,4 +62,4 @@ A skill to check comments on a specified PR number.
 - Comments from `github-actions[bot]`, `coderabbitai`, or other bots are AI-generated reviews, so assign them lower importance than comments from human reviewers, but always keep them in the summary
 
 ## Restrictions
-- Do not execute any commands other than `gh pr view` and `gh api -X GET`
+- Do not execute any commands other than `gh repo view`, `gh pr view`, and `gh api -X GET`
