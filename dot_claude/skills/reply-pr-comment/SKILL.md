@@ -36,7 +36,7 @@ This skill assumes that the **current checkout branch** is the **head branch of 
    - `[nits]` (nitpick): Acknowledge the fix (e.g., "Fixed, thanks!")
 
    **Comment requests a code change:**
-   - If addressed → include what was changed and the commit short hash: `Fixed in <commit_hash>. <brief description of the change>`
+   - If addressed → follow the structure in **Reply structure (addressed change)** below (acknowledgment + root cause if relevant, then commit hash + concrete fix + tests when applicable). Match the original comment’s language.
    - If not addressed → explain why with a clear reason
 
    **Comment is praise or acknowledgment:**
@@ -47,7 +47,7 @@ This skill assumes that the **current checkout branch** is the **head branch of 
    ```
    | # | File | Comment (summary) | Reply (draft) |
    |---|------|-------------------|---------------|
-   | 1 | path/to/file.ts | "Add null check" | "Fixed in abc1234. Added null guard." |
+   | 1 | path/to/fetch.py | "try/except が効かない" | (2段落: 問題の整理 + `abc1234` での修正とテスト) |
    | 2 | path/to/api.ts | "[q] Why use X?" | "X was chosen because..." |
    ```
 
@@ -62,9 +62,23 @@ This skill assumes that the **current checkout branch** is the **head branch of 
    ```
 1. Report a summary of posted replies (count, any failures)
 
+## Reply structure (addressed change)
+When the reviewer’s point was valid and you fixed it in code, prefer **two short paragraphs** (not a single English one-liner):
+
+1. **Acknowledgment**: Agree with the point; briefly restate the issue or root cause (e.g. why the bug happened). Optional emoji (e.g. `:pray:`) is fine on GitHub.
+2. **Resolution**: Start with the **7-char commit short hash** (e.g. 4e95eb0) and describe what you added/changed (function names, behavior). Mention **regression tests** and paths (e.g. `tests/test_fetch_cmd.py`) when added or updated.
+
+Do not paste full diffs; summarize only.
+
+## Example (Japanese, addressed change)
+```
+ご指摘の通り、ジェネレータの遅延評価で try/except が効かず、Message Fetch Error アラートが送られなくなっていました :pray:
+4e95eb0 で _slack_fetch_iter_with_alert を追加し、yield from 内で遅延イテレーション中の例外を捕捉して「Message Fetch Error」アラートを送るようにし、tests/test_fetch_cmd.py で回帰テストも追加しました。
+```
+
 ## Reply Format Guidelines
-- Keep replies concise (1-3 sentences)
-- When referencing a commit, use the 7-char short hash
+- Prefer the two-paragraph pattern above for addressed changes; keep each paragraph focused (avoid rambling)
+- When referencing a commit, use the 7-char short hash inline (as in the example)
 - Do not include full diffs in replies
 - Use the same language as the original comment (Japanese reply to Japanese comment, English reply to English comment)
 
