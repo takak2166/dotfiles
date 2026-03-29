@@ -33,7 +33,7 @@ This skill assumes that the **current checkout branch** is the **head branch of 
    **Comment has a label prefix:**
    - `[q]` (question): Provide a direct answer based on the code and context
    - `[imo]` (opinion): State agreement or present a counterargument with reasoning
-   - `[nits]` (nitpick): Acknowledge the fix (e.g., "Fixed, thanks!")
+   - `[nits]` (nitpick): Acknowledge the fix with thanks; use GitHub emoji in the first paragraph when it fits (e.g. `:pray:`)
 
    **Comment requests a code change:**
    - If addressed → follow the structure in **Reply structure (addressed change)** below (acknowledgment + root cause if relevant, then commit hash + concrete fix + tests when applicable). Match the original comment’s language.
@@ -65,20 +65,24 @@ This skill assumes that the **current checkout branch** is the **head branch of 
 ## Reply structure (addressed change)
 When the reviewer’s point was valid and you fixed it in code, prefer **two short paragraphs** (not a single English one-liner):
 
-1. **Acknowledgment**: Agree with the point; briefly restate the issue or root cause (e.g. why the bug happened). Optional emoji (e.g. `:pray:`) is fine on GitHub.
-2. **Resolution**: Start with the **7-char commit short hash** (e.g. 4e95eb0) and describe what you added/changed (function names, behavior). Mention **regression tests** and paths (e.g. `tests/test_fetch_cmd.py`) when added or updated.
+1. **Acknowledgment**: Agree with the point; briefly restate the issue or root cause (e.g. why the bug happened). **Use GitHub emoji liberally** (`:name:` syntax) only in this paragraph—e.g. `:pray:` for thanks / お願い, `:bow:` for 失礼しました, `:sweat:` when the bug was subtle or embarrassing. Ending with **`!`** is fine when it matches the tone (e.g. 感謝や軽い強調), e.g. `ありがとうございます！ :pray:`.
+2. **Resolution**: **Do not use emoji** in this paragraph. Start with the **7-char commit short hash** (e.g. 4e95eb0) and describe what you added/changed (function names, behavior). Mention **regression tests** and paths (e.g. `tests/test_fetch_cmd.py`) when added or updated.
+
+In paragraph 1, aim for **several emoji** when it reads naturally (not one token per sentence; avoid looking like spam).
 
 Do not paste full diffs; summarize only.
 
 ## Example (Japanese, addressed change)
 ```
 ご指摘の通り、ジェネレータの遅延評価で try/except が効かず、Message Fetch Error アラートが送られなくなっていました :pray:
-4e95eb0 で _slack_fetch_iter_with_alert を追加し、yield from 内で遅延イテレーション中の例外を捕捉して「Message Fetch Error」アラートを送るようにし、tests/test_fetch_cmd.py で回帰テストも追加しました。
+4e95eb0 で _slack_fetch_iter_with_alert を追加し、yield from 内で遅延イテレーション中の例外を捕捉して「Message Fetch Error」アラートを送るようにしました。tests/test_fetch_cmd.py で回帰テストも追加しました。
 ```
 
 ## Reply Format Guidelines
 - Prefer the two-paragraph pattern above for addressed changes; keep each paragraph focused (avoid rambling)
-- When referencing a commit, use the 7-char short hash inline (as in the example)
+- **Emoji**: **Paragraph 1 only**—use GitHub-flavored `:emoji_name:` often (thanks `:pray:`, `:bow:`, subtle/cringe `:sweat:`, agreement `:+1:` / `:ok_hand:`, caution `:eyes:`). **Paragraph 2: no emoji.** Match the comment language; emoji are language-agnostic.
+- **Paragraph 1** may end with `!` when appropriate (not required).
+- When referencing a commit, use the 7-char short hash inline at the start of paragraph 2 (as in the example)
 - Do not include full diffs in replies
 - Use the same language as the original comment (Japanese reply to Japanese comment, English reply to English comment)
 
