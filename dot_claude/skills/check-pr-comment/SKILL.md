@@ -28,7 +28,7 @@ A skill to check comments on a specified PR number.
     - `user.login`
     - `body`
     - `in_reply_to_id` (for detecting threads)
-  - You may pipe the raw output through helpers such as `jq` to make it easier to read, but the internal representation must still contain **all** comments
+  - You may pipe the raw output through `jq` to make it easier to read, but the internal representation must still contain **all** comments
 1. Group and summarize comments **systematically**
   - First group by `path` (file)
   - Within each file, further group comments by thread using `original_position` / `in_reply_to_id` (i.e., treat a top-level comment and its replies as one thread)
@@ -41,17 +41,20 @@ A skill to check comments on a specified PR number.
     - However, do **not** ignore bot comments; they must still appear in the grouped summary
 1. Perform a **coverage check** to prevent missed comments
   - Collect the set of all `id` values from the `gh api` results
-  - Collect the set of `id`s that are covered in your internal summary / triage representation`
+  - Collect the set of `id`s that are covered in your internal summary / triage representation
   - Compare the two sets:
     - If there are comment `id`s that are not yet covered in the summary, inspect each one
     - Decide whether it is intentionally skipped as “very minor” or was previously overlooked
     - If it was overlooked, add at least one line of summary so that **every comment `id` is either summarized or intentionally justified as skipped**
-1. Validate the appropriateness of the comments
-1. Score each comment's difficulty and importance on a 3-point scale, then ask the user whether to address them
+1. Validate the appropriateness of the comments using these criteria:
+  - Alignment with project guidelines (e.g. `@.claude/**/*.md` when present) and consistency with existing similar implementations in the repo
+  - Whether the reported issue is plausibly outdated (e.g. dependency or runtime version no longer relevant to the current branch)
+1. Score each comment’s **difficulty** and **importance** on the **3-point scales** below, then ask the user whether to address them
+  - **Importance:** **1** = low (polish, optional, or subjective preference); **2** = medium (should address before merge when feasible); **3** = high (correctness, security, project rules, or clear merge blocker)
+  - **Difficulty:** **1** = trivial (small localized change); **2** = moderate (multiple files or non-obvious fix); **3** = substantial (refactor, cross-cutting change, or needs design discussion)
+  - Present scores in the summary (e.g. `Importance 2 / Difficulty 1`) so the user can prioritize
 
 ## Notes
-- When validating comment appropriateness, check if they align with project guidelines (@.claude/**/*.md) and maintain consistency with existing similar implementations
-  - Also check if the issues mentioned are specific to older versions
 - For long JSON / diff outputs:
   - Do **not** arbitrarily skip parts of the diff just because `diff_hunk` or `body` is long
   - Conceptually **slice the JSON per comment** and process it comment by comment
@@ -62,4 +65,4 @@ A skill to check comments on a specified PR number.
 - Comments from `github-actions[bot]`, `coderabbitai`, or other bots are AI-generated reviews, so assign them lower importance than comments from human reviewers, but always keep them in the summary
 
 ## Restrictions
-- Do not execute any commands other than `gh repo view`, `gh pr view`, and `gh api -X GET`
+- Do not execute any commands other than `gh repo view`, `gh pr view`, `gh api -X GET`, and `jq` (only for parsing JSON piped from `gh api`; the internal comment list must still include every comment)
