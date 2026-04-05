@@ -16,6 +16,7 @@ A skill to reply to review comments on a specified PR with resolution results, a
 This skill assumes that the **current checkout branch** is the **head branch of the target PR**. If it is not, the mapping between comments and local diffs may be incorrect.
 
 1. If no PR number is provided, prompt the user to enter it and exit
+1. Get the repository name by running `gh repo view --json nameWithOwner -q .nameWithOwner` (returns `owner/repo`). Use this value for `[owner]` and `[repo]` in the API URLs in the following steps
 1. Verify the PR is Open or Draft using `gh pr view [PR number]`. If not, inform the user and exit
 1. Identify the target base branch and PR author using `gh pr view [PR number] --json baseRefName,author`
 1. If a structured internal list of comments from `check-pr-comment` is already available in this conversation, reuse it. Otherwise, fetch **all** review comments using `gh api -X GET /repos/[owner]/[repo]/pulls/[pr_number]/comments --paginate`
@@ -26,7 +27,7 @@ This skill assumes that the **current checkout branch** is the **head branch of 
    - Include both human and bot comments (e.g., `github-actions[bot]`, `coderabbitai`). Bot comments can still be skipped later in the confirmation step if the user does not want to reply.
    - Exclude comments that already have a reply from the PR author (use `author.login` from `gh pr view` and compare with `user.login` in each reply within the same thread)
 1. Collect the actual changes using `git log --oneline [base_branch]..HEAD` and `git diff [base_branch]...HEAD` to identify what was changed
-   - Use the base branch identified in step 3
+   - Use the base branch identified in step 4
    - For each comment's `path`, check whether the relevant file was modified
 1. For each actionable comment, generate a reply message:
 
@@ -65,12 +66,10 @@ This skill assumes that the **current checkout branch** is the **head branch of 
 ## Reply structure (addressed change)
 When the reviewer’s point was valid and you fixed it in code, prefer **two short paragraphs** (not a single English one-liner):
 
-1. **Acknowledgment**: Agree with the point; briefly restate the issue or root cause (e.g. why the bug happened). **Use GitHub emoji liberally** (`:name:` syntax) only in this paragraph—e.g. `:pray:` for thanks / お願い, `:bow:` for 失礼しました, `:sweat:` when the bug was subtle or embarrassing. Ending with **`!`** is fine when it matches the tone (e.g. 感謝や軽い強調), e.g. `ありがとうございます！ :pray:`.
-2. **Resolution**: **Do not use emoji** in this paragraph. Start with the **7-char commit short hash** (e.g. 4e95eb0) and describe what you added/changed (function names, behavior). Mention **regression tests** and paths (e.g. `tests/test_fetch_cmd.py`) when added or updated.
+1. **Acknowledgment**: Agree with the point; briefly restate the issue or root cause (e.g. why the bug happened). **Use GitHub emoji liberally** (`:name:` syntax) **only in this paragraph**—e.g. `:pray:` for thanks / お願い, `:bow:` for 失礼しました, `:sweat:` when the bug was subtle or embarrassing; `:+1:` / `:ok_hand:` for agreement, `:eyes:` for caution. Match the comment language; emoji are language-agnostic. Ending with **`!`** is fine when it matches the tone (e.g. 感謝や軽い強調), e.g. `ありがとうございます！ :pray:`. Aim for **several emoji** when it reads naturally (not one token per sentence; avoid looking like spam).
+2. **Resolution**: **Do not use emoji** in this paragraph. Start with the **7-char commit short hash** (e.g. `4e95eb0`) inline at the start of this paragraph and describe what you added/changed (function names, behavior). Mention **regression tests** and paths (e.g. `tests/test_fetch_cmd.py`) when added or updated.
 
-In paragraph 1, aim for **several emoji** when it reads naturally (not one token per sentence; avoid looking like spam).
-
-Do not paste full diffs; summarize only.
+**Constraints (addressed changes):** Do not paste full diffs; summarize only. Use the same language as the original comment (Japanese reply to Japanese comment, English reply to English comment). Keep each paragraph focused (avoid rambling).
 
 ## Example (Japanese, addressed change)
 ```
@@ -78,15 +77,7 @@ Do not paste full diffs; summarize only.
 4e95eb0 で _slack_fetch_iter_with_alert を追加し、yield from 内で遅延イテレーション中の例外を捕捉して「Message Fetch Error」アラートを送るようにしました。tests/test_fetch_cmd.py で回帰テストも追加しました。
 ```
 
-## Reply Format Guidelines
-- Prefer the two-paragraph pattern above for addressed changes; keep each paragraph focused (avoid rambling)
-- **Emoji**: **Paragraph 1 only**—use GitHub-flavored `:emoji_name:` often (thanks `:pray:`, `:bow:`, subtle/cringe `:sweat:`, agreement `:+1:` / `:ok_hand:`, caution `:eyes:`). **Paragraph 2: no emoji.** Match the comment language; emoji are language-agnostic.
-- **Paragraph 1** may end with `!` when appropriate (not required).
-- When referencing a commit, use the 7-char short hash inline at the start of paragraph 2 (as in the example)
-- Do not include full diffs in replies
-- Use the same language as the original comment (Japanese reply to Japanese comment, English reply to English comment)
-
 ## Restrictions
-- Do not execute any commands other than `gh pr view`, `gh api`, `git log`, and `git diff`
+- Do not execute any commands other than `gh repo view`, `gh pr view`, `gh api`, `git log`, and `git diff`
 - Do not post any reply without user confirmation
 - Do not modify any code — this skill only posts replies
