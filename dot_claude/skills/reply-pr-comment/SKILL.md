@@ -69,8 +69,8 @@ This skill assumes that the **current checkout branch** is the **head branch of 
 ## Reply structure (addressed change)
 When the reviewer’s point was valid and you fixed it in code, prefer **two short paragraphs** (not a single English one-liner):
 
-1. **Acknowledgment**: Agree with the point; briefly restate the issue or root cause (e.g. why the bug happened). **Use GitHub emoji liberally** (`:name:` syntax) **only in this paragraph**—e.g. `:pray:` for thanks / お願い, `:bow:` for 失礼しました, `:sweat:` when the bug was subtle or embarrassing; `:+1:` / `:ok_hand:` for agreement, `:eyes:` for caution. Match the comment language; emoji are language-agnostic. Ending with **`!`** is fine when it matches the tone (e.g. 感謝や軽い強調), e.g. `ありがとうございます！ :pray:`. Aim for **several emoji** when it reads naturally (not one token per sentence; avoid looking like spam). **Do not stack emoji at the end of the sentence** (e.g. avoid `:pray: :+1:`).
-2. **Resolution**: **Do not use emoji** in this paragraph. Start with the **7-char commit short hash** (e.g. `4e95eb0`) inline at the start of this paragraph and describe what you added/changed (function names, behavior). Mention **regression tests** and paths (e.g. `tests/test_fetch_cmd.py`) when added or updated.
+1. **Acknowledgment**: Agree with the point; briefly restate the issue or root cause (e.g. why the bug happened). **Use GitHub emoji liberally** (`:name:` syntax) **only in this paragraph**—e.g. `:pray:` for thanks / お願い, `:bow:` for 失礼しました, `:sweat:` when the bug was subtle or embarrassing; `:+1:` / `:ok_person:` for agreement, `:eyes:` for caution. Match the comment language; emoji are language-agnostic. Ending with **`!`** is fine when it matches the tone (e.g. 感謝や軽い強調), e.g. `ありがとうございます！ :pray:`. Aim for **several emoji** when it reads naturally (not one token per sentence; avoid looking like spam). **Do not stack emoji at the end of the sentence** (e.g. avoid `:pray: :+1:`).
+2. **Resolution**: **Do not use emoji** in this paragraph. Start with the **7-char commit short hash** (e.g. 4e95eb0) inline at the start of this paragraph and describe what you added/changed (function names, behavior). Mention **regression tests** and paths (e.g. `tests/test_fetch_cmd.py`) when added or updated.
 
 **Constraints (addressed changes):** Do not paste full diffs; summarize only. Use the same language as the original comment (Japanese reply to Japanese comment, English reply to English comment). Keep each paragraph focused (avoid rambling).
 
@@ -88,6 +88,15 @@ When the review is a small style or preference point and you are keeping the cur
 ```
 コメントありがとうございます！
 パフォーマンスは実質差がなく、コメントを各行に付けられたほうがレビューや保守時の可読性が上がるかと思ったので、現状の形で統一しようと思います :pray:
+```
+
+## Example (Japanese, deferred / not addressing now)
+When you are not making the requested change yet, give a clear reason (repo conventions, tool behavior, cost/benefit) and state what would trigger a follow-up (e.g. a reproducible build or runtime issue). Same tone as brief replies: thanks first, then rationale; emoji only when it fits.
+
+```
+コメントありがとうございます！
+src 直下にも __init__.py がなく、src/bot など 多くのサブパッケージも __init__.py なしで運用されているため、「全サブパッケージに __init__.py がある」という前提はこのリポジトリとは一致ないかと思いました :pray:
+poetry の packages = [{include = "src"}] でも通常は配下モジュールが取り込まれる想定のため、poetry build の成果物で src.mattermost が欠ける事象が出たら対応しようかと思います :pray:
 ```
 
 ## Restrictions
