@@ -43,6 +43,9 @@ This skill assumes that the **current checkout branch** is the **head branch of 
    **Comment is praise or acknowledgment:**
    - By default, skip replying. Only when the user explicitly chooses to reply in the confirmation step, generate a brief thank-you message.
 
+   **Comment is very short (one line, minor nit, or quick question):**
+   - Keep the reply proportionally short: a brief thanks plus one compact paragraph (or two very short paragraphs) is enough. Do not stretch to the full **Reply structure (addressed change)** layout when the thread does not need that depth.
+
 1. Present all generated replies to the user in a table format:
 
    ```
@@ -66,15 +69,25 @@ This skill assumes that the **current checkout branch** is the **head branch of 
 ## Reply structure (addressed change)
 When the reviewer’s point was valid and you fixed it in code, prefer **two short paragraphs** (not a single English one-liner):
 
-1. **Acknowledgment**: Agree with the point; briefly restate the issue or root cause (e.g. why the bug happened). **Use GitHub emoji liberally** (`:name:` syntax) **only in this paragraph**—e.g. `:pray:` for thanks / お願い, `:bow:` for 失礼しました, `:sweat:` when the bug was subtle or embarrassing; `:+1:` / `:ok_hand:` for agreement, `:eyes:` for caution. Match the comment language; emoji are language-agnostic. Ending with **`!`** is fine when it matches the tone (e.g. 感謝や軽い強調), e.g. `ありがとうございます！ :pray:`. Aim for **several emoji** when it reads naturally (not one token per sentence; avoid looking like spam).
+1. **Acknowledgment**: Agree with the point; briefly restate the issue or root cause (e.g. why the bug happened). **Use GitHub emoji liberally** (`:name:` syntax) **only in this paragraph**—e.g. `:pray:` for thanks / お願い, `:bow:` for 失礼しました, `:sweat:` when the bug was subtle or embarrassing; `:+1:` / `:ok_hand:` for agreement, `:eyes:` for caution. Match the comment language; emoji are language-agnostic. Ending with **`!`** is fine when it matches the tone (e.g. 感謝や軽い強調), e.g. `ありがとうございます！ :pray:`. Aim for **several emoji** when it reads naturally (not one token per sentence; avoid looking like spam). **Do not stack emoji at the end of the sentence** (e.g. avoid `:pray: :+1:`).
 2. **Resolution**: **Do not use emoji** in this paragraph. Start with the **7-char commit short hash** (e.g. `4e95eb0`) inline at the start of this paragraph and describe what you added/changed (function names, behavior). Mention **regression tests** and paths (e.g. `tests/test_fetch_cmd.py`) when added or updated.
 
 **Constraints (addressed changes):** Do not paste full diffs; summarize only. Use the same language as the original comment (Japanese reply to Japanese comment, English reply to English comment). Keep each paragraph focused (avoid rambling).
+
+For **short** review comments, prefer a **short** reply (see example below); the two-paragraph + commit-hash pattern is for substantive fixes, not every thread.
 
 ## Example (Japanese, addressed change)
 ```
 ご指摘の通り、ジェネレータの遅延評価で try/except が効かず、Message Fetch Error アラートが送られなくなっていました :pray:
 4e95eb0 で _slack_fetch_iter_with_alert を追加し、yield from 内で遅延イテレーション中の例外を捕捉して「Message Fetch Error」アラートを送るようにしました。tests/test_fetch_cmd.py で回帰テストも追加しました。
+```
+
+## Example (Japanese, brief reply to a short comment)
+When the review is a small style or preference point and you are keeping the current approach (or the exchange does not need commit hashes and test paths), a short acknowledgment plus one paragraph of rationale is appropriate. Avoid stacking emoji at the end of the sentence.
+
+```
+コメントありがとうございます！
+パフォーマンスは実質差がなく、コメントを各行に付けられたほうがレビューや保守時の可読性が上がるかと思ったので、現状の形で統一しようと思います :pray:
 ```
 
 ## Restrictions
