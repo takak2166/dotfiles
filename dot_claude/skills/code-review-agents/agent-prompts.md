@@ -42,6 +42,9 @@ The integration agent (9) must produce the report in this structure:
 ## Overview
 (2-3 sentence executive summary: scope, risk level, overall assessment)
 
+## Coverage Gap (optional)
+(If any specialist failed/timed out/was skipped, list which agent(s) and why, in 1-3 bullets)
+
 ## Critical Issues
 (Must fix before merge — with cross-agent attribution)
 
