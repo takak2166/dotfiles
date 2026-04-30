@@ -1,6 +1,6 @@
 ---
 name: check-pr-comment
-description: Review GitHub pull request comments and help the user triage them.
+description: Review GitHub pull request inline review comments (via gh) and help triage them.
 disable-model-invocation: true
 ---
 
@@ -15,11 +15,14 @@ A skill to check comments on a specified PR number.
 ## Steps
 1. If no PR number is provided, prompt the user to enter it and exit
 1. Get the repository name by running `gh repo view --json nameWithOwner -q .nameWithOwner` (returns `owner/repo`). Use this value for `[owner]` and `[repo]` in the API URL in the following steps
-1. Verify the PR is Open or Draft using `gh pr view [PR number]`. If not, inform the user and exit
+1. Verify the PR is Open or Draft using `gh pr view [PR number] --json state,isDraft -q .`
+   - **Continue** only when `state` is `"OPEN"` (Draft PRs use `state: "OPEN"` with `isDraft: true`)
+   - If `state` is `"CLOSED"`, inform the user the PR is no longer open (merged or closed without merge), **do not** fetch or summarize comments, and exit
+   - If JSON is unavailable, fall back to human-readable `gh pr view [PR number]` and apply the same rule: proceed only if the PR is Open or Draft
 1. Fetch **all** review comments using `gh api -X GET /repos/[owner]/[repo]/pulls/[pr_number]/comments --paginate`
   - Do **not** filter by `path` or file name at the API level. Always fetch the complete set first.
   - If certificate errors or network errors occur, execute the same command from outside the sandbox
-  - If review comments exist that are only available via review-specific endpoints, additionally check using `gh api -X GET /repos/[owner]/[repo]/pulls/[pr_number]/reviews/{review_number}/comments` as needed
+  - **Review-specific endpoint (rare):** Only after Step 4’s paginated list, if **a review thread on the PR’s Files changed tab has no matching row** (same file path and overlapping line / body intent) in that JSON—after confirming pagination is complete—first list review ids with `gh api -X GET /repos/[owner]/[repo]/pulls/[pr_number]/reviews --paginate` if needed, then fetch `gh api -X GET /repos/[owner]/[repo]/pulls/[pr_number]/reviews/{review_number}/comments` for the relevant `review_number`(s). Do not use these endpoints by default.
 1. Convert the JSON response into a **structured internal list** with **one row per comment**
   - For each comment, extract at least the following fields:
     - `id`
