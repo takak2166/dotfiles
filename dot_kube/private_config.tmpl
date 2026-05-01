@@ -1,0 +1,21 @@
+# Render: gomplate -f config.tmpl -o config
+# pass entries: kube/default/cluster-ca, kube/default/client-cert, kube/default/client-key
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: {{ pass "kube/default/cluster-ca" }}
+    server: https://192.168.0.210:6443
+  name: default
+contexts:
+- context:
+    cluster: default
+    user: default
+  name: default
+current-context: default
+kind: Config
+preferences: {}
+users:
+- name: default
+  user:
+    client-certificate-data: {{ pass "kube/default/client-cert" }}
+    client-key-data: {{ pass "kube/default/client-key" }}

@@ -1,0 +1,21 @@
+# APM manifest (chezmoi → ~/apm.yml). Run: apm install
+# Based on: https://github.com/takak2166/agent/blob/main/apm.yml.example
+
+name: dotfiles
+version: 1.0.0
+
+dependencies:
+  apm:
+    - takak2166/agent
+
+    - takak2166/agent/skills/check-pr-comment
+    - takak2166/agent/skills/code-review-agents
+    - takak2166/agent/skills/create-commit-en
+    - takak2166/agent/skills/draft-pr
+    - takak2166/agent/skills/kubectl-namespace
+    - takak2166/agent/skills/linear-create-project
+    - takak2166/agent/skills/plan
+    - takak2166/agent/skills/ready-pr
+    - takak2166/agent/skills/reply-pr-comment
+    - takak2166/agent/skills/review-skill
+    - takak2166/agent/skills/update-doc
