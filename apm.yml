@@ -14,8 +14,11 @@ dependencies:
     - takak2166/agent/skills/draft-pr
     - takak2166/agent/skills/kubectl-namespace
     - takak2166/agent/skills/linear-create-project
+    - takak2166/agent/skills/linear-create-issue
     - takak2166/agent/skills/plan
     - takak2166/agent/skills/ready-pr
     - takak2166/agent/skills/reply-pr-comment
     - takak2166/agent/skills/review-skill
     - takak2166/agent/skills/update-doc
+
+    - mizchi/skills/empirical-prompt-tuning
