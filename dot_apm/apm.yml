@@ -18,7 +18,7 @@ dependencies:
     - takak2166/agent/skills/plan
     - takak2166/agent/skills/ready-pr
     - takak2166/agent/skills/reply-pr-comment
-    - takak2166/agent/skills/review-skill
+    - takak2166/agent/skills/audit-skill
     - takak2166/agent/skills/update-doc
 
     - mizchi/skills/meta/empirical-prompt-tuning
