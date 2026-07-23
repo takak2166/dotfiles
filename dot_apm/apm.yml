@@ -22,4 +22,5 @@ dependencies:
     - takak2166/agent/skills/update-doc
 
     - mizchi/skills/meta/empirical-prompt-tuning
+    - mcollina/skills/skills/skill-optimizer
     - helpfeel/cosense-cli/skills/cosense
