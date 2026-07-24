@@ -20,6 +20,7 @@ dependencies:
     - takak2166/agent/skills/reply-pr-comment
     - takak2166/agent/skills/audit-skill
     - takak2166/agent/skills/update-doc
+    - takak2166/agent/skills/skill-hardening-loop
 
     - mizchi/skills/meta/empirical-prompt-tuning
     - mcollina/skills/skills/skill-optimizer
