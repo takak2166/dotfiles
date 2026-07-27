@@ -25,3 +25,4 @@ dependencies:
     - mizchi/skills/meta/empirical-prompt-tuning
     - mcollina/skills/skills/skill-optimizer
     - helpfeel/cosense-cli/skills/cosense
+    - github/gh-stack/skills/gh-stack
