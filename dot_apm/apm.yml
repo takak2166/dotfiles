@@ -13,6 +13,7 @@ dependencies:
     - takak2166/agent/skills/create-commit-en
     - takak2166/agent/skills/draft-pr
     - takak2166/agent/skills/kubectl-namespace
+    - takak2166/agent/skills/init-agents
     - takak2166/agent/skills/linear-advance-issue
     - takak2166/agent/skills/linear-create-project
     - takak2166/agent/skills/linear-create-issue
