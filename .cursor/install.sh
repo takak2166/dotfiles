@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# Idempotent Cloud Agent install for this chezmoi-managed dotfiles repo.
+# Installs the tools needed to develop and test the dotfiles:
+#   - chezmoi : the dotfile manager this repo is built for
+#   - pass    : password-store, used by the private_*.tmpl templates
+#   - gnupg   : backing store for `pass`
+#   - gomplate: referenced by dot_kube/private_config.tmpl for local rendering
+#   - apm     : Agent Package Manager that consumes dot_apm/apm.yml
+set -euo pipefail
+
+BIN_DIR="${HOME}/.local/bin"
+mkdir -p "${BIN_DIR}"
+export PATH="${BIN_DIR}:${PATH}"
+
+echo "==> Installing system packages (pass, gnupg)"
+if command -v apt-get >/dev/null 2>&1; then
+  sudo apt-get update -y
+  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    pass gnupg ca-certificates curl
+fi
+
+echo "==> Installing chezmoi -> ${BIN_DIR}"
+if ! command -v chezmoi >/dev/null 2>&1; then
+  sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "${BIN_DIR}"
+fi
+chezmoi --version
+
+echo "==> Installing gomplate -> ${BIN_DIR}"
+if ! command -v gomplate >/dev/null 2>&1; then
+  GOMPLATE_VERSION="v4.3.0"
+  curl -fsSL -o "${BIN_DIR}/gomplate" \
+    "https://github.com/hairyhenderson/gomplate/releases/download/${GOMPLATE_VERSION}/gomplate_linux-amd64"
+  chmod +x "${BIN_DIR}/gomplate"
+fi
+gomplate --version
+
+echo "==> Installing apm (Agent Package Manager) -> ${BIN_DIR}"
+if ! command -v apm >/dev/null 2>&1; then
+  curl -sSL https://aka.ms/apm-unix | APM_INSTALL_DIR="${BIN_DIR}" sh
+fi
+apm --version || true
+
+echo "==> Ensure ~/.local/bin is on PATH for future shells"
+if ! grep -qs 'HOME/.local/bin' "${HOME}/.bashrc" 2>/dev/null; then
+  printf '\n# Added by dotfiles cloud-agent install\nexport PATH="$HOME/.local/bin:$PATH"\n' >> "${HOME}/.bashrc"
+fi
+
+echo "==> install.sh complete"
