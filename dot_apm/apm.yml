@@ -26,3 +26,5 @@ dependencies:
     - mcollina/skills/skills/skill-optimizer
     - helpfeel/cosense-cli/skills/cosense
     - github/gh-stack/skills/gh-stack
+    - mattpocock/skills/skills/productivity/grilling
+    - mattpocock/skills/skills/productivity/grill-me
