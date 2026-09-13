@@ -16,6 +16,7 @@ dependencies:
     - takak2166/agent/skills/linear-create-project
     - takak2166/agent/skills/linear-create-issue
     - takak2166/agent/skills/linear-weekly-summary
+    - takak2166/agent/skills/my-grill-me
     - takak2166/agent/skills/publish-skill-apm
     - takak2166/agent/skills/ready-pr
     - takak2166/agent/skills/reply-pr-comment
