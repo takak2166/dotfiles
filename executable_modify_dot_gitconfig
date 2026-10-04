@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Idempotently add [include] for global git hooks (chezmoi fragment).
+set -euo pipefail
+
+include_marker='config.d/chezmoi-hooks.ini'
+input="$(cat)"
+
+if [[ "$input" == *"$include_marker"* ]]; then
+  printf '%s' "$input"
+  exit 0
+fi
+
+if [[ -n "$input" ]]; then
+  printf '%s\n\n' "$input"
+fi
+
+cat <<'EOF'
+# Added by chezmoi (https://github.com/takak2166/dotfiles)
+[include]
+	path = ~/.config/git/config.d/chezmoi-hooks.ini
+EOF

@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Global pre-commit hook (chezmoi → ~/.config/git/hooks/pre-commit).
+# Runs repository-local pre-commit first, then gitleaks on staged changes.
+set -euo pipefail
+
+git_dir="$(git rev-parse --git-dir 2>/dev/null || true)"
+if [[ -n "$git_dir" ]]; then
+  repo_hook="${git_dir}/hooks/pre-commit"
+  if [[ -f "$repo_hook" && -x "$repo_hook" ]]; then
+    "$repo_hook"
+  fi
+fi
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "gitleaks: not found in PATH" >&2
+  echo "Install gitleaks and retry. See dotfiles README (Secret scanning)." >&2
+  exit 1
+fi
+
+config="${HOME}/.config/gitleaks/gitleaks.toml"
+if [[ ! -f "$config" ]]; then
+  echo "gitleaks: config missing at $config" >&2
+  echo "Run: chezmoi apply" >&2
+  exit 1
+fi
+
+gitleaks protect --staged --redact --config "$config"

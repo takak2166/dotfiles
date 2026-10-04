@@ -1,0 +1,13 @@
+# Global gitleaks config (chezmoi → ~/.config/gitleaks/gitleaks.toml).
+# MVP: default rules only. Extend allowlist for placeholders / test fixtures.
+
+title = "dotfiles-global-gitleaks"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Shared allowlist for all repositories on this machine"
+paths = []
+regexes = []
+stopwords = []
