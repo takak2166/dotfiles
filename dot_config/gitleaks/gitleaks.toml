@@ -3,6 +3,9 @@
 
 title = "dotfiles-global-gitleaks"
 
+[extend]
+useDefault = true
+
 [allowlist]
 description = "Shared allowlist for all repositories on this machine"
 paths = []
