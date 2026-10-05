@@ -24,9 +24,5 @@ dependencies:
     - takak2166/agent/skills/update-doc
     - takak2166/agent/skills/skill-hardening-loop
 
-    - mizchi/skills/empirical-prompt-tuning
-    - mcollina/skills/skills/skill-optimizer
     - helpfeel/cosense-cli/skills/cosense
     - github/gh-stack/skills/gh-stack
-    - mattpocock/skills/skills/productivity/grilling
-    - mattpocock/skills/skills/productivity/grill-me
