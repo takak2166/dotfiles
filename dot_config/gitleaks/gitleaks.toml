@@ -1,13 +1,17 @@
-# Global gitleaks config (chezmoi → ~/.config/gitleaks/gitleaks.toml).
-# MVP: default rules only. Extend allowlist for placeholders / test fixtures.
+# グローバルな gitleaks 設定 (chezmoi → ~/.config/gitleaks/gitleaks.toml)。
+# 既定ルールのみ使う。プレースホルダやテスト用フィクスチャは、下の allowlist 雛形へ追加する。
 
 title = "dotfiles-global-gitleaks"
 
 [extend]
 useDefault = true
 
-[allowlist]
-description = "Shared allowlist for all repositories on this machine"
-paths = []
-regexes = []
-stopwords = []
+# このマシン上の全リポジトリで共有する allowlist。
+# チェックが無い allowlist は gitleaks が設定エラーにするため、初期状態ではコメントアウトしている。
+# 使うときは [[allowlists]] 以下のコメントを外し、commits / paths / regexes / stopwords のいずれかを 1 つ以上書く。
+# 検出を弱める値は、誤検知の具体的な理由があるものだけにする。
+# [[allowlists]]
+# description = "このマシン上の全リポジトリで共有する allowlist"
+# paths = ['''path/to/fixture\.txt''']
+# regexes = ['''known-test-value''']
+# stopwords = ['''example-stopword''']

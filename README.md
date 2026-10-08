@@ -38,10 +38,12 @@ chezmoi apply   # hooks, gitleaks config, git include fragment, ~/.gitconfig inc
 
 ```bash
 cd /path/to/any/git/repo
-echo 'AWS_SECRET_ACCESS_KEY=AKIAIOSFODNN7EXAMPLE' > leak-test.txt
+# AKIA…EXAMPLE is ignored by the default aws-access-token allowlist.
+# gitleaks:allow applies only to this source line, not to the file it writes.
+echo 'AWS_SECRET_ACCESS_KEY=AKIAIOSFODNN7EXAMPLX' > leak-test.txt  # gitleaks:allow
 git add leak-test.txt
 git commit -m test           # should be rejected by gitleaks
 rm -f leak-test.txt
 ```
 
-Shared allowlist: edit `dot_config/gitleaks/gitleaks.toml` in this repo, then `chezmoi apply`.
+Shared allowlist: uncomment the `[[allowlists]]` template in `dot_config/gitleaks/gitleaks.toml` and add at least one check (`commits`, `paths`, `regexes`, or `stopwords`), then `chezmoi apply`. An allowlist with no checks is a gitleaks configuration error.
