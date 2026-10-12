@@ -24,6 +24,12 @@ dependencies:
     - takak2166/agent/skills/audit-skill
     - takak2166/agent/skills/update-doc
     - takak2166/agent/skills/skill-hardening-loop
+    - takak2166/agent/skills/product-storage
+    - takak2166/agent/skills/linear-plan-milestones
+    - takak2166/agent/skills/product-requirements
+    - takak2166/agent/skills/write-adr
+    - takak2166/agent/skills/linear-decompose-project
+    - takak2166/agent/skills/product-kickoff
 
     - helpfeel/cosense-cli/skills/cosense
     - github/gh-stack/skills/gh-stack
