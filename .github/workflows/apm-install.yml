@@ -1,0 +1,25 @@
+name: apm install
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  apm-install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Prepare manifest
+        run: cp dot_apm/apm.yml apm.yml
+
+      - name: Install APM dependencies
+        uses: microsoft/apm-action@e5650fb81c4b5965090a17bd1ed1956071e95d17 # v1.9.1
+        with:
+          target: cursor
