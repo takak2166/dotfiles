@@ -31,5 +31,5 @@ dependencies:
     - takak2166/agent/skills/linear-decompose-project
     - takak2166/agent/skills/product-kickoff
 
-    - helpfeel/cosense-cli/skills/cosense
-    - github/gh-stack/skills/gh-stack
+    - helpfeel/cosense-cli/skills/cosense#83229d89e14239d6c88506cca51c3cd3690eb46a # v1.18.0
+    - github/gh-stack/skills/gh-stack#2a49e6751238633db504655d8a8eba3e433e827d # v0.3.0

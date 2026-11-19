@@ -1,0 +1,59 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    "helpers:pinGitHubActionDigests"
+  ],
+  "timezone": "Asia/Tokyo",
+  "schedule": ["before 3am on monday"],
+  "labels": ["dependencies"],
+  "commitMessagePrefix": "chore(deps):",
+  "commitMessageAction": "update",
+  "commitMessageTopic": "{{depName}}",
+  "commitMessageExtra": "to {{newVersion}}",
+  "prHourlyLimit": 2,
+  "prConcurrentLimit": 10,
+  "ignoreTests": false,
+  "packageRules": [
+    {
+      "description": "takak2166/agent and skills stay unpinned (apm update -g -y); do not manage via Renovate",
+      "matchManagers": ["custom.regex"],
+      "matchDepPatterns": ["^takak2166/agent"],
+      "enabled": false
+    },
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "APM skill pin: helpfeel/cosense-cli/skills/cosense (SHA + tag comment)",
+      "fileMatch": ["^dot_apm/apm\\.yml$"],
+      "matchStrings": [
+        "- helpfeel/cosense-cli/skills/cosense#(?<currentDigest>[a-f0-9]{40})\\s+# (?<currentValue>v[\\d.]+)"
+      ],
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "helpfeel/cosense-cli",
+      "packageNameTemplate": "helpfeel/cosense-cli",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "description": "APM skill pin: github/gh-stack/skills/gh-stack (SHA + tag comment)",
+      "fileMatch": ["^dot_apm/apm\\.yml$"],
+      "matchStrings": [
+        "- github/gh-stack/skills/gh-stack#(?<currentDigest>[a-f0-9]{40})\\s+# (?<currentValue>v[\\d.]+)"
+      ],
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "github/gh-stack",
+      "packageNameTemplate": "github/gh-stack",
+      "versioningTemplate": "semver"
+    }
+  ]
+}
