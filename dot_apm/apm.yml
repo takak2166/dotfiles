@@ -4,6 +4,14 @@
 name: dotfiles
 version: 1.0.0
 
+# Limit apm install -g / apm compile -g to these harnesses.
+# Without it, compile -g writes root context files for every known target.
+targets:
+  - claude
+  - codex
+  - cursor
+  - opencode
+
 dependencies:
   apm:
     - takak2166/agent
