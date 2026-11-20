@@ -15,31 +15,14 @@ targets:
 dependencies:
   apm:
     - takak2166/agent
+    # The root package already deploys every skill under skills/. APM 0.36+ rejects
+    # declaring a repository together with its own subdirectory packages (microsoft/apm#3699),
+    # so skills are not listed one by one and the hook package uses an alias to install
+    # outside apm_modules/takak2166/agent.
     # Cursor only: sessionStart hook that injects the always-on rules (reads ~/.claude/rules)
-    - takak2166/agent/packages/cursor-always-on-rules
-
-    - takak2166/agent/skills/check-pr-comment
-    - takak2166/agent/skills/code-review-agents
-    - takak2166/agent/skills/draft-pr
-    - takak2166/agent/skills/init-agents
-    - takak2166/agent/skills/linear-advance-issue
-    - takak2166/agent/skills/linear-create-project
-    - takak2166/agent/skills/linear-create-issue
-    - takak2166/agent/skills/linear-weekly-summary
-    - takak2166/agent/skills/my-grill-me
-    - takak2166/agent/skills/my-reflect
-    - takak2166/agent/skills/publish-skill-apm
-    - takak2166/agent/skills/ready-pr
-    - takak2166/agent/skills/reply-pr-comment
-    - takak2166/agent/skills/audit-skill
-    - takak2166/agent/skills/update-doc
-    - takak2166/agent/skills/skill-hardening-loop
-    - takak2166/agent/skills/product-storage
-    - takak2166/agent/skills/linear-plan-milestones
-    - takak2166/agent/skills/product-requirements
-    - takak2166/agent/skills/write-adr
-    - takak2166/agent/skills/linear-decompose-project
-    - takak2166/agent/skills/product-kickoff
+    - git: https://github.com/takak2166/agent.git
+      path: packages/cursor-always-on-rules
+      alias: cursor-always-on-rules
 
     - helpfeel/cosense-cli/skills/cosense#83229d89e14239d6c88506cca51c3cd3690eb46a # v1.18.0
     - github/gh-stack/skills/gh-stack#2a49e6751238633db504655d8a8eba3e433e827d # v0.3.0
