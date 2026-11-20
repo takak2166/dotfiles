@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Daily APM update helper (systemd user oneshot). Requires user-local apm at ~/.local/bin/apm.
+set -euo pipefail
+
+APM_BIN="${HOME}/.local/bin/apm"
+
+if [[ ! -x "$APM_BIN" ]]; then
+  printf '%s\n' "apm-self-update-daily: missing ${APM_BIN}" >&2
+  exit 1
+fi
+
+export PATH="${HOME}/.local/bin:${PATH:-/usr/bin:/bin}"
+
+check_out=$("$APM_BIN" self-update --check 2>&1) || {
+  printf '%s\n' "$check_out" >&2
+  exit 1
+}
+
+printf '%s\n' "$check_out"
+
+if grep -q 'Update available:' <<<"$check_out"; then
+  "$APM_BIN" self-update
+fi
