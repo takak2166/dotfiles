@@ -26,3 +26,9 @@ dependencies:
 
     - helpfeel/cosense-cli/skills/cosense#83229d89e14239d6c88506cca51c3cd3690eb46a # v1.18.0
     - github/gh-stack/skills/gh-stack#2a49e6751238633db504655d8a8eba3e433e827d # v0.3.0
+
+    # Dependencies of takak2166/agent skills/skill-hardening-loop. The root package
+    # deploys the skill but not its apm.yml dependencies, so declare them here.
+    # Pinned to main HEAD as of 2026-11-20 (no release tags; bump by hand).
+    - mizchi/skills/empirical-prompt-tuning#93e6163ce3012f0365df91a0e457ce165c41c8aa
+    - mcollina/skills/skills/skill-optimizer#c75d70dbfbe991d8cec42aeda0b64ff14fbb9ac7
